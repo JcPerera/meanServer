@@ -18,11 +18,18 @@ router.post('/register', (req, res, next) => {
         mobile: req.body.mobile
     });
 
-    User.addUser(newUser, (err, user) => {
-        if (err) {
-            res.json({ success: false, msg: 'Failed to register' });
+    User.getUserByUsername(newUser.username, (err, user) => {
+        if (err) throw err;
+        if (user) {
+            return res.json({ success: false, msg: "User alredy Excists" });
         } else {
-            res.json({ success: true, msg: 'User registered' });
+            User.addUser(newUser, (err, user) => {
+                if (err) {
+                    res.json({ success: false, msg: 'Failed to register' });
+                } else {
+                    res.json({ success: true, msg: 'User registered' });
+                }
+            });
         }
     });
 });

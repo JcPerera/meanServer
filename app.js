@@ -19,13 +19,10 @@ mongoose.connection.on('error',(err)=>{
     console.log('database error '+err);
 })
 
-
-
-
 const app = express();
 
 //port number
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 //set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,15 +41,22 @@ require('./config/passport')(passport);
 
 
 const users = require('./routes/users');
-
 app.use('/users', users);
+
+const products = require('./routes/products');
+app.use('/online-orders', products);
+
 
 //index route
 app.get('/', (req, res) => {
     res.send('invalid Endpoint');
 }); 
 
+app.get('*', (req,res)=>{
+    res.sendFile(path.join(__dirname, 'public/index.html'))
+})
+
 //start server
 app.listen(port, () => {
-    console.log('server started on port' + port);
+    console.log('server started on port ' + port);
 });  
