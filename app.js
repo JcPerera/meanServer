@@ -46,6 +46,8 @@ app.use('/users', users);
 const products = require('./routes/products');
 app.use('/online-orders', products);
 
+const cart = require('./routes/cart');
+app.use('/cart', cart);
 
 //index route
 app.get('/', (req, res) => {
