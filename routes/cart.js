@@ -7,7 +7,13 @@ const Cart = require('../models/cart');
 // create a cart
 router.post('/', (req, res, next) => {
     Cart.createCart(req.body, (err, cart) => {
-        return res.send(cart);
+        if(err){
+            return res.send(err);
+            
+        }else{
+            return res.send(cart);
+            
+        }
     })
 })
 

@@ -16,6 +16,10 @@ const ReservationSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    username: {
+        type: String,
+        required: true,
+    },
     date: {
         type: String,
         required: true
@@ -24,11 +28,27 @@ const ReservationSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    guests: {
+    count: {
         type: Number,
+        required: true,
+    },
+    today: {
+        type: String,
         required: true,
     }
 
 });
 
-const User = module.exports = mongoose.model('User', UserSchema);
+const Reservations = module.exports = mongoose.model('Reservations', ReservationSchema);
+
+module.exports.createReservation = function (data, callback) {
+    Reservations.create(data, callback);
+}
+
+module.exports.findUserReservation = function (mobile, callback) {
+    Reservations.findOne(mobile, callback);
+}
+
+module.exports.updateReservation = function (query, data, callback) {
+    Reservations.findByIdAndUpdate(query, data, callback);
+}
