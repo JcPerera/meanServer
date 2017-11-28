@@ -42,8 +42,8 @@ module.exports.findCart = function (mobile, callback) {
     Cart.findOne(query, callback);
 }
 
-module.exports.updateCart = function (mobile, data, callback) {
-    let query = { mobile: mobile };
-    Cart.findOneAndUpdate(query, data, callback);
+module.exports.addToCart = function (data, callback) {
+    let query = { _id: data.params.id };
+    Cart.update(query, { $push: { "cart.products": data.body } }, callback);
 }
 

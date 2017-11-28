@@ -4,7 +4,7 @@ const config = require('../config/database');
 const Cart = require('../models/cart');
 
 
-//update a cart
+//send cart details (create / excisting)
 router.put('/', (req, res, next) => {
     let mobile = req.body.mobile;
     let data = req.body;
@@ -12,14 +12,7 @@ router.put('/', (req, res, next) => {
         if (err) {
             return res.send(err);
         } else if (cart) {
-            Cart.updateCart(mobile, data, (err, newCart) => {
-                if (err) {
-                    return res.send(err);
-
-                } else {
-                    return res.send(newCart);
-                }
-            })
+            return res.send(cart);
         } else if (!cart) {
             Cart.createCart(req.body, (err, cart) => {
                 if (err) {
@@ -33,5 +26,16 @@ router.put('/', (req, res, next) => {
         }
     })
 });
+    
+//add products to the cart
+router.put('/:id', (req, res, next) => {
+    Cart.addToCart(req, (err, upd) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(upd);
+        }
+    })
+})
 
 module.exports = router;
