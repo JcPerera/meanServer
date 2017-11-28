@@ -4,32 +4,34 @@ const config = require('../config/database');
 const Cart = require('../models/cart');
 
 
-// create a cart
-router.post('/', (req, res, next) => {
-    Cart.createCart(req.body, (err, cart) => {
-        if(err){
+//update a cart
+router.put('/', (req, res, next) => {
+    let mobile = req.body.mobile;
+    let data = req.body;
+    Cart.findCart(mobile, (err, cart) => {
+        if (err) {
             return res.send(err);
-            
-        }else{
-            return res.send(cart);
-            
+        } else if (cart) {
+            Cart.updateCart(mobile, data, (err, newCart) => {
+                if (err) {
+                    return res.send(err);
+
+                } else {
+                    return res.send(newCart);
+                }
+            })
+        } else if (!cart) {
+            Cart.createCart(req.body, (err, cart) => {
+                if (err) {
+                    return res.send(err);
+
+                } else {
+                    return res.send(cart);
+
+                }
+            })
         }
     })
-})
-
-//update a cart
-router.put('/:id', (req, res, next) => {
-    let id = req.params.id;
-    Cart.updateCart({ _id: id }, req.body, (err, cart) => {
-        Cart.findCart({_id:id},(err,ans)=>{
-            if(err){
-                res.send(err);
-            }else{
-                res.send(ans);
-            }
-            
-        })
-    });
 });
 
 module.exports = router;
