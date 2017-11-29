@@ -47,3 +47,18 @@ module.exports.addToCart = function (data, callback) {
     Cart.update(query, { $push: { "cart.products": data.body } }, callback);
 }
 
+module.exports.findCartById = function (data, callback) {
+    let query = { _id: data.params.id };
+    Cart.find(query, callback);
+}
+
+module.exports.updateCartByItemId = function (data, callback) {
+    let query = { _id: data.params.id, "cart.products.name": data.body.name }
+    Cart.update(query, { $set: { "cart.products.$.quantity": data.body.quantity } }, callback);
+}
+
+module.exports.removeItemFromCart = function (data, callback) {
+    let query = { _id: data.params.id }
+    Cart.update(query, { $pull: { "cart.products": { "name": data.body.name } } }, callback);
+}
+
