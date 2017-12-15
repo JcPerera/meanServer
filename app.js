@@ -56,6 +56,9 @@ app.use('/online-orders', products);
 const cart = require('./routes/cart');
 app.use('/cart', cart);
 
+const orders = require('./routes/orders');
+app.use('/orders', orders);
+
 const reservations = require('./routes/reservations');
 app.use('/reservations', reservations);
 
